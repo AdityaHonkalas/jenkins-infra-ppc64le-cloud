@@ -56,10 +56,10 @@ sed -i 's/ansible_connection=local/ansible_connection=ssh/g' inventory
 sed -i "s|ssh|ssh ansible_ssh_private_key_file=${WORKSPACE}/deploy/id_rsa|g" inventory
 cp examples/all.yaml .
 sed -i 's/htpasswd_identity_provider: false/htpasswd_identity_provider: true/g' all.yaml
-sed -i 's/htpasswd_username: ""/htpasswd_username: "${HTPASS_USER}"/g' all.yaml
-sed -i 's/htpasswd_password: ""/htpasswd_password: "${HTPASS_PASSWD}"/g' all.yaml
+sed -i 's/htpasswd_username: ""/htpasswd_username: '${HTPASS_USER}'/g' all.yaml
+sed -i 's/htpasswd_password: ""/htpasswd_password: '${HTPASS_PASSWD}'/g' all.yaml
 sed -i 's/htpasswd_user_role: ""/htpasswd_user_role: "self-provisioner"/g' all.yaml
-sed -i 's/localhost/${BASTION_IP}/g' inventory
+sed -i "s/localhost/${BASTION_IP}/g" inventory
 ansible-playbook  -i inventory -e @all.yaml playbooks/main.yml
 echo ""
 if [ $? -ne 0 ]; then
